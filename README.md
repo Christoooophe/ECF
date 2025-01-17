@@ -31,7 +31,9 @@ Sinon, vous pouvez tout à fait changer les identifiants de connexion, pour cela
 
 Ce projet est un projet MVC en asp.net utilisant SQL Server et MongoDB
 
-Voici l'architecture du projet : 
+![image](https://github.com/user-attachments/assets/dd0f0000-44dd-4bd6-b9f8-4bfa8c243de7)
+
+Voici la structure des dossiers de mon projet : 
 
 ![image](https://github.com/user-attachments/assets/111e8fc9-5137-4d3e-b921-2e090d9c940e)
 
