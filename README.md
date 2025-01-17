@@ -39,7 +39,7 @@ Voici la structure des dossiers de mon projet :
 
 Diagramme de classe : 
 
-![image](https://github.com/user-attachments/assets/63b19ead-0f24-43fe-88d6-46b38ec19b1f)
+![image](https://github.com/user-attachments/assets/51cc8748-4dda-485c-a3b1-cc99bf06e737)
 
 Mes modèles ont des controleurs associés, ces controleurs renvoient vers une vue, pour que l'utilisateur puisse effectuer des actions, puis ces actions sont renvoyées au controleur qui va les renvoyer au modèle
 pour mise à jour des données.
