@@ -60,6 +60,7 @@ J'ai donc une table de liaison, appelée EvenementParticipant, me permettant de 
 
 Un troisième Model se joint aux deux autres : Statistiques. Ce modèle va avoir son service associé et son controller. Les données statistiques seront récupérées dans les deux autres modèles 
 (nombre de participants, nombre d'évènements, nombre moyen de participant par évènement...).
+Il n'y a pas de lien entre ce mmodèle et les deux autres, il ne fait qu'itiliser les data des deux autres
 
 D'un point de vue interface, l'utilisateur peut effectuer un CRUD sur les evenements et les participants. De plus, en ajoutant ou en éditant un participant, il peut l'ajouter à un ou plusieurs évènements via 
 une liste de checkbox. Chaque checkbox représente un évènement. Ainsi, la table de liaison ce met à jour en BDD, et on peut lier nos deux Modèles.
