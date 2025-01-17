@@ -8,16 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using ECF.Data;
 using ECF.Models;
 using ECF.Models.ViewModels;
+using ECF.Services;
 
 namespace ECF.Controllers
 {
     public class ParticipantsController : Controller
     {
         private readonly ECFContext _context;
+        private StatistiquesService _statistiques;
 
-        public ParticipantsController(ECFContext context)
+        public ParticipantsController(ECFContext context, StatistiquesService statistiquesService)
         {
             _context = context;
+            _statistiques = statistiquesService;
         }
 
         // GET: Participants
@@ -35,6 +38,7 @@ namespace ECF.Controllers
             }
 
             var participant = await _context.Participant
+                .Include(e => e.Evenements)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (participant == null)
             {
@@ -69,6 +73,7 @@ namespace ECF.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ParticipantId,ParticipantName,ParticipantFirstName,Age")] ParticipantViewModel viewModel)
         {
+            Console.WriteLine(ModelState);
             if (ModelState.IsValid)
             {
                 var participant = new Participant
@@ -80,12 +85,20 @@ namespace ECF.Controllers
                         .Where(e => e.IsSelected)
                         .Select(e => new EvenementParticipant
                         {
-                            EvenementId = e.EvenementId
+                            EvenementId = e.EvenementId,
+                            ParticipantId = viewModel.ParticipantId
                         }).ToList() : null
                 };
 
                 _context.Participant.Add(participant);
                 await _context.SaveChangesAsync();
+
+                var stat = new Statistiques
+                {
+                    StatistiqueName = "Nombre participants",
+                    Data = _context.Participant.Count()
+                };
+                await _statistiques.CreateAsync(stat);
 
                 return RedirectToAction(nameof(Index));
             }

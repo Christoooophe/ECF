@@ -1,13 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ECF.Data;
+using ECF.Models;
+using ECF.Services;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ECFContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ECFContext") ?? throw new InvalidOperationException("Connection string 'ECFContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.Configure<StatistiquesDatabaseSettings>(
+    builder.Configuration.GetSection("StatistiquesStoreDatabase"));
+builder.Services.AddSingleton<StatistiquesService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
