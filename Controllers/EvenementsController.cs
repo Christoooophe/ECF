@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ECF.Data;
 using ECF.Models;
+using X.PagedList.Extensions;
 
 namespace ECF.Controllers
 {
@@ -20,9 +21,15 @@ namespace ECF.Controllers
         }
 
         // GET: Evenements
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int ?page)
         {
-            return View(await _context.Evenement.ToListAsync());
+            int pageSize = 3;
+            int pageNumber = page ?? 1;
+
+            var evenements = await _context.Evenement
+                .OrderBy(t => t.Id)
+                .ToListAsync();
+            return View(evenements.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Evenements/Details/5

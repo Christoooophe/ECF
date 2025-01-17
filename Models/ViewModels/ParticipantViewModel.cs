@@ -9,11 +9,13 @@ namespace ECF.Models.ViewModels
 
         [Required]
         [DisplayName("Nom")]
+        [DataType(DataType.Text)]
         [StringLength(50, ErrorMessage = "Le nom est trop long")]
         public string ParticipantName { get; set; }
 
         [Required]
         [DisplayName("Prénom")]
+        [DataType(DataType.Text)]
         [StringLength(50, ErrorMessage = "Le prénnom est trop long")]
         public string ParticipantFirstName { get; set; }
 

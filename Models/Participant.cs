@@ -8,10 +8,12 @@ namespace ECF.Models
         public int Id { get; set; }
         [Required]
         [DisplayName("Nom")]
+        [DataType(DataType.Text)]
         [StringLength(50, ErrorMessage = "Le nom est trop long")]
         public string Nom { get; set; }
         [Required]
         [DisplayName("Prénom")]
+        [DataType(DataType.Text)]
         [StringLength(50, ErrorMessage = "Le prénnom est trop long")]
         public string Prenom { get; set; }
         [Required]
