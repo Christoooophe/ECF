@@ -76,14 +76,6 @@ jobs:
           run: dotnet run --project ECF.csproj
           env:
             ASPNETCORE_ENVIRONMENT: Development
-        - name: Wait for app to be ready
-          run: |
-            echo "Waiting for the app to be ready..."
-            until curl --silent http://localhost:7196 > /dev/null; do
-              echo "Waiting for app..."
-              sleep 5
-            done
-
         - name: Cypress run
           uses: cypress-io/github-action@v6
           with:
