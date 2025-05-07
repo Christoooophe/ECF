@@ -74,14 +74,14 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Start the application
-        run: dotnet run --no-build --configuration Release --urls=http://localhost:7196 &
+        run: dotnet run --no-build --configuration Release --urls=https://localhost:7196 &
         env:
           ASPNETCORE_ENVIRONMENT: Development
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          wait-on: http://localhost:7196
+          wait-on: https://localhost:7196
           wait-on-timeout: 60
 
   test:
