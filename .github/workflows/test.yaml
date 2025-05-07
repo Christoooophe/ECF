@@ -28,7 +28,7 @@ jobs:
         run: dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage"
 
   trivy-scan:
-    name: Trivy Security Scan
+    name: Trivy
     runs-on: ubuntu-latest
     needs: build-and-test
 
@@ -56,3 +56,24 @@ jobs:
           format: table
           exit-code: 1
           severity: CRITICAL,HIGH,MEDIUM
+
+  sonar-scan:
+    name: SonarQube
+    runs-on: ubuntu-latest
+    needs: build-and-test
+  
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+  
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+  
+      - name: SonarQube Scan
+        run: |
+          dotnet tool install --global dotnet-sonarscanner
+          dotnet sonarscanner begin /k:"test-api-back-end" /d:sonar.host.url="http://localhost:9000" /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          dotnet build
+          dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
