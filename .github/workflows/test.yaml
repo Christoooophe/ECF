@@ -55,10 +55,38 @@ jobs:
           exit-code: 1
           severity: CRITICAL,HIGH,MEDIUM,LOW,UNKNOWN
   cypress-run:
-    runs-on: ubuntu-24.04
-    needs: build-and-test
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
+      runs-on: ubuntu-24.04
+      needs: build-and-test
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: Setup .NET
+          uses: actions/setup-dotnet@v4
+          with:
+            dotnet-version: '8.0.x'
+
+        - name: Restore dependencies
+          run: dotnet restore
+
+        - name: Build
+          run: dotnet build --configuration Release
+
+        - name: Start the application
+          run: dotnet run --project ./ECF/ECF.csproj
+          env:
+            ASPNETCORE_ENVIRONMENT: Development
+        - name: Wait for app to be ready
+          run: |
+            echo "Waiting for the app to be ready..."
+            until curl --silent http://localhost:7196 > /dev/null; do
+              echo "Waiting for app..."
+              sleep 5
+            done
+
+        - name: Cypress run
+          uses: cypress-io/github-action@v6
+          with:
+            start: echo "App already started"
+            wait-on: http://localhost:7196
+            wait-on-timeout: 60
