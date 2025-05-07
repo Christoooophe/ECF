@@ -1,8 +1,6 @@
 name: ECF
 
-on:
-  push:
-    branches: [ master ]
+on: push
 
 jobs:
   build-and-test:
@@ -27,12 +25,6 @@ jobs:
       - name: Run tests
         run: dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage"
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-artifact
-          path: ./bin/Release
-
   trivy-scan:
     name: Trivy
     runs-on: ubuntu-latest
@@ -41,11 +33,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
-      - name: Download build artifact
-        uses: actions/download-artifact@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
         with:
-          name: build-artifact
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release
 
       - name: Run Trivy
         uses: aquasecurity/trivy-action@master
@@ -55,4 +53,15 @@ jobs:
           ignore-unfixed: true
           format: table
           exit-code: 1
-          severity: CRITICAL,HIGH,MEDIUM
+          severity: CRITICAL,HIGH,MEDIUM,LOW,UNKNOWN
+  cypress-run:
+    runs-on: ubuntu-24.04
+    needs: trivy-scan
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run build
+          start: npm start
