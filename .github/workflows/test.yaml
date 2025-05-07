@@ -62,17 +62,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build
-        run: dotnet build --configuration Release
-
       - name: Start the application
         run: dotnet run --no-build --configuration Release --urls=http://localhost:5157 &
         env:
