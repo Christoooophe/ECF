@@ -1,6 +1,7 @@
 ﻿describe('scénario ajout d\'un participant', () => {
     beforeEach(() => {
         cy.visit('http://localhost:5157/')
+        cy.wait(3000)
         cy.get('[data-test="participantLink"]').click()
         cy.url().should('include', '/Participants')
         cy.get('[data-test="createParticipant"]').click()
