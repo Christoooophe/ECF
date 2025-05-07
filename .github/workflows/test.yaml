@@ -73,7 +73,7 @@ jobs:
           run: dotnet build --configuration Release
 
         - name: Start the application
-          run: dotnet run --project ./ECF/ECF.csproj
+          run: dotnet run --project ECF.csproj
           env:
             ASPNETCORE_ENVIRONMENT: Development
         - name: Wait for app to be ready
