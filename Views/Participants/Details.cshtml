@@ -13,24 +13,24 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Nom)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10" data-test="nameDetailPage">
             @Html.DisplayFor(model => model.Nom)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Prenom)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10" data-test="firstnameDetailPage">
             @Html.DisplayFor(model => model.Prenom)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Age)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10" data-test="ageDetailPage">
             @Html.DisplayFor(model => model.Age)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.Id" data-test="editButtonDetailPage">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

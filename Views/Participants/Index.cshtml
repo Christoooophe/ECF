@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" data-test="createParticipant">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -27,7 +27,7 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody data-test="participantsArray">
 @foreach (var item in Model) {
         <tr>
             <td>
@@ -43,9 +43,9 @@
                 @Html.DisplayFor(modelItem => item.Evenements.Count)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" data-test="editButtonParticipant">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id" data-test="detailsButtonParticipant">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" data-test="deleteButtonParticipant">Delete</a>
             </td>
         </tr>
 }
