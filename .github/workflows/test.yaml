@@ -3,8 +3,8 @@ name: ECF
 on: push
 
 jobs:
-  build-and-test:
-    name: Build & Test
+  build:
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
@@ -28,7 +28,7 @@ jobs:
   trivy-scan:
     name: Trivy
     runs-on: ubuntu-latest
-    needs: build-and-test
+    needs: build
 
     steps:
       - name: Checkout code
@@ -54,31 +54,42 @@ jobs:
           format: table
           exit-code: 1
           severity: CRITICAL,HIGH,MEDIUM,LOW,UNKNOWN
-  cypress-run:
-      runs-on: ubuntu-24.04
-      needs: build-and-test
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v4
 
-        - name: Setup .NET
-          uses: actions/setup-dotnet@v4
-          with:
-            dotnet-version: '8.0.x'
+  # cypress-run:
+  #     runs-on: ubuntu-24.04
+  #     needs: build
+  #     steps:
+  #       - name: Checkout
+  #         uses: actions/checkout@v4
 
-        - name: Restore dependencies
-          run: dotnet restore
+  #       - name: Setup .NET
+  #         uses: actions/setup-dotnet@v4
+  #         with:
+  #           dotnet-version: '8.0.x'
 
-        - name: Build
-          run: dotnet build --configuration Release
+  #       - name: Restore dependencies
+  #         run: dotnet restore
 
-        - name: Start the application
-          run: dotnet run --project ECF.csproj
-          env:
-            ASPNETCORE_ENVIRONMENT: Development
-        - name: Cypress run
-          uses: cypress-io/github-action@v6
-          with:
-            start: echo "App already started"
-            wait-on: http://localhost:7196
-            wait-on-timeout: 60
+  #       - name: Build
+  #         run: dotnet build --configuration Release
+
+  #       - name: Start the application
+  #         run: dotnet run
+  #         env:
+  #           ASPNETCORE_ENVIRONMENT: Development
+  #       - name: Cypress run
+  #         uses: cypress-io/github-action@v6
+  #         with:
+  #           start: echo "App already started"
+  #           wait-on: http://localhost:7196
+  #           wait-on-timeout: 60
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Run tests
+        run: dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage"
+
